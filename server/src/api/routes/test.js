@@ -3,7 +3,7 @@ import { Router } from 'express'
 const route = Router()
 
 export default (app) => {
-  app.use('/list', route)
+  app.use('/', route)
 
   route.get('/', (req, res) => {
     res.json([

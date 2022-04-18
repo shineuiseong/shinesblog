@@ -11,8 +11,12 @@ export default (app) => {
   const whitelist = ['http://localhost:3000', 'http://localhost:3000/blog']
   const corsOptions = {
     origin: function (origin, callback) {
-      const isWhitelisted = whitelist.indexOf(origin) !== -1
-      callback(null, isWhitelisted)
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true)
+      } else {
+        console.log('Not Allowd Origin')
+        callback(new Error('Not Allowed Origin!'))
+      }
     },
     credentials: true,
   }
