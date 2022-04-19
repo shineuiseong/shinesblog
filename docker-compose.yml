@@ -31,7 +31,7 @@
 #       - /usr/app/node_modules
 #       - ./server:/usr/app
 #     command: ["npm", "run", "dev"]
-
+#dd
 version: "3.3"
 services:
   nginx:
