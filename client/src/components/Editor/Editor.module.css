@@ -1,0 +1,35 @@
+.titleInput {
+    font-size: 3rem;
+    font-weight: bold;
+    outline: none;
+    padding-bottom: 0.5rem;
+    border: none;
+    border-bottom: 1px solid #ced4da;
+    margin-bottom: 2rem;
+    width: 100%;
+    height: 4rem;
+  }
+  
+  .languageWrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .languageList {
+    width: 8rem;
+  }
+  
+  .likeLanguagesWrapper {
+    width: 100%;
+  }
+  
+  @media screen and (max-width: 575px) {
+    .titleInput {
+      font-size: 2rem;
+    }
+    .likeLanguagesWrapper {
+      font-size: 0.8rem;
+    }
+  }
+  
