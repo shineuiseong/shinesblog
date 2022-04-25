@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Landing from 'page/Landing/Landing'
 import Blog from 'page/Blog/Blog'
 import PostRegister from 'page/PostRegister/PostRegister'
+import SettingContainer from 'components/SettingContainer/SettingContainer'
 
 function App() {
   const containerRef = useRef(null)
@@ -43,6 +44,9 @@ function App() {
                   </Route>
                   <Route path="/register">
                     <PostRegister />
+                  </Route>
+                  <Route path="/setting">
+                    <SettingContainer />
                   </Route>
                 </Switch>
               </Router>

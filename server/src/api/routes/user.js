@@ -1,6 +1,8 @@
 import { Router } from 'express'
 import { UserService } from '../../services/index.js'
+import { Post as postModel } from '../../models/Post.js'
 import { User as userModel } from '../../models/User.js'
+import { Notification as notificationModel } from '../../models/Notification.js'
 import { asyncErrorWrapper } from '../../asyncErrorWrapper.js'
 import { nickNameDuplicationCheck, isAccessTokenValid, isUserIdValid } from '../middlewares/index.js'
 const route = Router()
@@ -8,13 +10,41 @@ const route = Router()
 export default (app) => {
   app.use('/users', route)
 
+  // s3 pre-sign url 발급
+  route.post(
+    '/sign',
+    asyncErrorWrapper(async (req, res, next) => {
+      const { fileName } = req.body
+      let UserServiceInstance = new UserService({ postModel, userModel, notificationModel })
+      const signedUrlPut = await UserServiceInstance.getPreSignUrl(fileName)
+
+      res.status(200).json({
+        preSignUrl: signedUrlPut,
+      })
+    })
+  )
+
   // 사용자 정보 조회
   route.get(
     '/',
     asyncErrorWrapper(async (req, res, next) => {
       const { nickName } = req.query
-      let UserServiceInstance = new UserService({ userModel })
+      let UserServiceInstance = new UserService({ postModel, userModel, notificationModel })
       const user = await UserServiceInstance.findByNickName(nickName)
+
+      res.status(200).json(user)
+    })
+  )
+
+  // 사용자 정보 상세 보기
+  route.get(
+    '/:id',
+    isUserIdValid,
+    asyncErrorWrapper(async (req, res, next) => {
+      const id = req.params.id
+
+      let UserServiceInstance = new UserService({ postModel, userModel, notificationModel })
+      const user = await UserServiceInstance.findById(id)
 
       res.status(200).json(user)
     })

@@ -24,7 +24,7 @@ import { clearUser, fetchUserByRefreshToken } from 'store/user'
 import authService from 'service/auth_service'
 import LoginModal from '../Modal/Login_modal/LoginModal'
 
-const Container = styled.div`
+const Container = styled.aside`
   position: fixed;
   .active {
     border-right: 4px solid #fff;
@@ -118,7 +118,7 @@ const Item = styled(NavLink)`
     }
   }
   img {
-    width: 1.2rem;
+    width: 1.4rem;
     height: auto;
     filter: invert(92%) sepia(4%) saturate(1033%) hue-rotate(169deg) brightness(78%) contrast(85%);
   }
@@ -205,8 +205,6 @@ const Sidebar = () => {
   const [profileClick, setprofileClick] = useState(false)
   const handleProfileClick = () => setprofileClick(!profileClick)
 
-  const [imageUrl, setimageUrl] = useState('')
-
   // reducer
   const dispatch = useDispatch()
   const history = useHistory()
@@ -245,7 +243,7 @@ const Sidebar = () => {
     return (
       <Item onClick={() => setClick(false)} activeclassname="active" to="/setting">
         <img src={Team} alt="setting" />
-        <Text clicked={click}>마이페이지</Text>
+        <Text clicked={click}>Setting</Text>
       </Item>
     )
   }
@@ -289,11 +287,11 @@ const Sidebar = () => {
         <SlickBar clicked={click}>
           <Item onClick={() => setClick(false)} activeclassname="active" to="/blog">
             <img src={Home} alt="Home" />
-            <Text clicked={click}>홈</Text>
+            <Text clicked={click}>Home</Text>
           </Item>
           <Item onClick={() => setClick(false)} activeclassname="active" to="/register">
             <img src={Documents} alt="Documents" />
-            <Text clicked={click}>글쓰기</Text>
+            <Text clicked={click}>Write</Text>
           </Item>
           {!user.nickName ? '' : <SetMysetting />}
         </SlickBar>

@@ -1,0 +1,68 @@
+@value registerBackground from '../../common/color.css';
+.main{
+    
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-top: 3rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    padding-bottom: 5rem;
+
+}
+.titleWrapper{
+
+    display: flex;
+    align-items: center;
+}
+.titleWrapper h3{
+    width: 20rem;
+}
+.titleWrapper input{
+    border-color: hsl(0,0%,80%);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    font-size: large;
+    width: 18rem;
+    min-height: 3rem;
+    padding: 1rem;
+}
+
+.description {
+    margin-top: 0.875rem;
+    color: rgb(134, 142, 150);
+    font-size: 0.875rem;
+  }
+
+
+  .mainButton {
+    font-weight: bold;
+    color: white;
+    border-radius: 4px;
+    width: 100px;
+    margin-right: 10px;
+    height: 2rem;
+    font-size: 1rem;
+  }
+
+  .buttonComplete {
+    margin-top: 1.5rem;
+    background-color: registerBackground;
+  }
+  .buttonSignOut {
+    background: rgb(255, 50, 23);
+  }
+  
+
+  @media screen and (max-width: 768px) {
+    .main {
+      width: 60%;
+    }
+    .titleWrapper {
+      padding-top: 1rem;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  

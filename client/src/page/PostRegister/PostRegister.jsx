@@ -1,25 +1,18 @@
 import React from 'react'
 import Sidebar from 'components/Sidebar/Sidebar'
-import Banner from 'components/Banner/Banner'
-import styled from 'styled-components'
+import styles from './PostRegister.module.css'
+
 import EditorContainer from 'components/Editor/EditorContainer'
 
-const Container = styled.section`
-  display: flex;
-  flex-direction: column;
-  padding: 5rem 1rem;
-  width: 1024px;
-  margin: 0 auto; /* 중앙 정렬 */
-  background-color: #ffffff;
-`
-
-const Post = () => {
+const PostRegister = () => {
   return (
     <>
       <Sidebar />
-      <Banner />
+      <section className={styles.editorWrapper}>
+        <EditorContainer></EditorContainer>
+      </section>
     </>
   )
 }
 
-export default Post
+export default PostRegister
