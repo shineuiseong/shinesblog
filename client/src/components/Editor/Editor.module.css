@@ -26,6 +26,7 @@
   
   @media screen and (max-width: 575px) {
     .titleInput {
+      width: 70%;
       font-size: 2rem;
     }
     .likeLanguagesWrapper {

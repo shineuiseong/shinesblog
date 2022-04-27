@@ -8,7 +8,7 @@ export default (app) => {
     const connection = mongoose.connect(
       config.databaseURL,
       {
-        dbName: 'bo',
+        dbName: 'shinesblog',
         useNewUrlParser: true,
         autoIndex: false,
       },

@@ -50,6 +50,88 @@ const postSchema = mongoose.Schema(
   }
 )
 
+postSchema.statics.findPost = async (offset, limit, sort, language, period, isClosed) => {
+  let offsetQuery = parseInt(offset) || 0
+  let limitQuery = parseInt(limit) || 20
+  let sortQuery = []
+
+  //Sorting
+  if (sort) {
+    const sortableColumns = ['views', 'createdAt', 'totalLikes']
+    sortQuery = sort.split(',').filter((value) => {
+      return sortableColumns.indexOf(value.substr(1, value.length)) != -1 || sortableColumns.indexOf(value) != -1
+    })
+    sortQuery.push('-createdAt')
+  } else {
+    sortQuery.push('createdAt')
+  }
+
+  // Query
+  let query = {}
+  if (typeof language === 'string') query.language = { $in: language.split(',') }
+  else if (typeof language === 'undefined') return []
+
+  if (!isNaN(period)) {
+    let today = new Date()
+    query.createdAt = { $gte: today.setDate(today.getDate() - period) }
+  }
+  // 마감된 글 안보기 기능(false만 지원)
+  if (typeof isClosed === 'string' && !(isClosed === 'true')) {
+    query.isClosed = { $eq: isClosed === 'true' }
+  }
+
+  return await Post.find(query).where('isDeleted').equals(false).sort(sortQuery.join(' ')).skip(Number(offsetQuery)).limit(Number(limitQuery))
+}
+
+// 사용자에게 추천 조회
+postSchema.statics.findPostRecommend = async function (sort, language, postId, userId, limit) {
+  let sortQuery = []
+  //Sorting
+  if (sort) {
+    const sortableColumns = ['views', 'createdAt', 'totalLikes']
+    sortQuery = sort.split(',').filter((value) => {
+      return sortableColumns.indexOf(value.substr(1, value.length)) != -1 || sortableColumns.indexOf(value) != -1
+    })
+  } else {
+    sortQuery.push('createdAt')
+  }
+  // Query
+  let query = {}
+  if (typeof language == 'object' && language.length > 0) query.language = { $in: language }
+
+  // 14일 이내 조회
+  let today = new Date()
+  query.createdAt = { $gte: today.setDate(today.getDate() - 14) }
+
+  // 현재 읽고 있는 글은 제외하고 조회
+  query._id = { $ne: postId }
+
+  // 사용자가 작성한 글 제외하고 조회
+  if (userId) query.author = { $ne: userId }
+
+  let posties = await Post.find(query).where('isDeleted').equals(false).where('isClosed').equals(false).sort(sortQuery.join(' ')).limit(limit).select('-isDeleted')
+
+  // 부족한 개수만큼 추가 조회
+  if (posties.length < limit - 1) {
+    let notInPostIdArr = posties.map((study) => {
+      return study._id
+    })
+    notInPostIdArr.push(posties)
+    query._id = { $nin: notInPostIdArr } // 이미 조회된 글들은 중복 x
+    delete query.language
+    let shortPosties = await Post.find(query)
+      .where('isDeleted')
+      .equals(false)
+      .where('isClosed')
+      .equals(false)
+      .sort(sortQuery.join(' '))
+      .limit(limit - postes.length)
+      .select('-isDeleted')
+    posties.push(...shortPosties)
+  }
+  return posties
+}
+
 postSchema.statics.deletePost = async (id) => {
   await Post.findByIdAndUpdate({ _id: id }, { isDeleted: true })
 }
@@ -83,7 +165,7 @@ postSchema.statics.modifyComment = async (comment) => {
 }
 // 댓글 삭제
 postSchema.statics.deleteComment = async (id) => {
-  const commentRecord = await Study.findOneAndUpdate({ comments: { $elemMatch: { _id: id } } }, { $pull: { comments: { _id: id } } })
+  const commentRecord = await Post.findOneAndUpdate({ comments: { $elemMatch: { _id: id } } }, { $pull: { comments: { _id: id } } })
   return commentRecord
 }
 

@@ -8,7 +8,7 @@ import routes from '../api/index.js'
 
 export default (app) => {
   // 프론트랑 통신연결  크로스도메인설정
-  const whitelist = ['http://localhost:3000', 'http://localhost:3000/blog']
+  const whitelist = ['http://localhost:3000', 'http://localhost:3000/blog', 'http://localhost:80']
   const corsOptions = {
     origin: function (origin, callback) {
       if (whitelist.indexOf(origin) !== -1) {

@@ -21,7 +21,7 @@ const SocialLoginContainer = ({ handleClose }) => {
     //유저데이터로 로그인 후 acecess token 설정
     dispatch(fetchUserById(userData)).then((response) => {
       const id = response.payload._id
-      console.log(id)
+
       // 로그인이 되면? 소셜로그인 모달 닫기
       if (response.payload.loginSuccess === true) handleClose()
       else {

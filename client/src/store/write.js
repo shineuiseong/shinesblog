@@ -20,7 +20,7 @@ const writePost = createAsyncThunk(WritePostAction, async ({ title, content }, t
     content,
   })
 
-  return response
+  return response.status
 })
 
 const modifyPost = createAsyncThunk(modifyPostAction, async ({ postId, title, content }, thunAPI) => {
@@ -30,7 +30,7 @@ const modifyPost = createAsyncThunk(modifyPostAction, async ({ postId, title, co
     content,
   })
 
-  return response
+  return response.status
 })
 
 const initialState = {

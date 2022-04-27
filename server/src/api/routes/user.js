@@ -89,4 +89,45 @@ export default (app) => {
       })
     })
   )
+
+  //  사용자 정보 삭제(회원탈퇴)
+  route.delete(
+    '/:id',
+    isUserIdValid,
+    isAccessTokenValid,
+    asyncErrorWrapper(async (req, res, next) => {
+      return res.status(200).json({
+        isExists: false,
+      })
+    })
+  )
+
+  // 사용자 관심 등록 리스트 조회
+  // likes/:id
+
+  // 사용자 읽은 목록 조회
+  // /read-list/:id
+
+  // 사용자 작성 글 목록 조회
+  route.get(
+    '/myPost/:id',
+    isUserIdValid,
+    isAccessTokenValid,
+    asyncErrorWrapper(async (req, res, next) => {
+      const id = req.params.id
+      let UserServiceInstance = new UserService({ postModel, userModel, notificationModel })
+      const user = await UserServiceInstance.fin
+    })
+  )
+
+  // 사용자 알림 목록 조회
+  route.get(
+    '/notifications/:id',
+    asyncErrorWrapper(async (req, res, next) => {
+      const id = req.params.id
+      let NotificationServcieInstance = new NotificationService({ notificationModel })
+      const notice = await NotificationServcieInstance.findMyNotice(id)
+      res.status(200).json(notice)
+    })
+  )
 }
